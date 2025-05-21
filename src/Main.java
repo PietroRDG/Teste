@@ -1,15 +1,31 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.HashMap;
+import java.util.Map;
+
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        Map<String, BigDecimal> faturamento = new HashMap<>();
+        faturamento.put("SP", BigDecimal.valueOf(67836.43));
+        faturamento.put("RJ", BigDecimal.valueOf(36678.66));
+        faturamento.put("MG", BigDecimal.valueOf(29229.88));
+        faturamento.put("ES", BigDecimal.valueOf(27165.48));
+        faturamento.put("Outros", BigDecimal.valueOf(19849.53));
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+        BigDecimal total = BigDecimal.ZERO;
+        for (BigDecimal valor : faturamento.values()) {
+            total = total.add(valor);
+        }
+
+        System.out.println("Percentual por estado:");
+        for (Map.Entry<String, BigDecimal> entry : faturamento.entrySet()) {
+            String estado = entry.getKey();
+            BigDecimal valor = entry.getValue();
+
+            BigDecimal percentual = valor.divide(total, 10, RoundingMode.HALF_UP)
+                    .multiply(BigDecimal.valueOf(100));
+
+            System.out.printf("%s: %.2f%%\n", estado, percentual);
         }
     }
 }
